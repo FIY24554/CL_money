@@ -3,6 +3,13 @@
 //let year = ["2019","2020","2021","2022","2023"];
 //let month = ["1","2","3","4","5","6","7","8","9","10","11","12"]
 
+//年を取得
+let DB_year = DB.sql('SELECT Date_format(date,"%Y") as yyyymm FROM TP_calendar Group by yyyymm;');
+
+for(i=0;i<DB_year.length;i++){
+	$("#year_select").append('<option value="year'+i+'">'+DB_year[i]["yyyymm"]+'</option>')
+}
+
 let year_pull = $("#year_select").children(':selected').text();
 let month_pull = $("#month_select").children(':selected').text();
 
@@ -14,6 +21,8 @@ year_pull = $("#year_select").children(':selected').text();
  $("#month_select").on("change",function(){
  month_pull = $("#month_select").children(':selected').text();
  });
+
+
 
 //戻るボタン押下時の処理
 $("#botan1").on("click", function(){
