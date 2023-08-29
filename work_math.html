@@ -113,7 +113,7 @@
 </body>
 <script>
 let check = 0;
-
+let select_check = false;
 	//ブラウザのバックボタン押下時の警告メッセージ
 	window.addEventListener('load', function() {
 	  window.addEventListener('popstate', function(event) {
@@ -163,6 +163,7 @@ let check = 0;
 	
 	//プルダウン選択時
 	$("#staff_select").on("change",function(){
+		select_check=true;
 		let DB_name = $(this).children(':selected').text();
 		let name = DB_name.slice(7,40);
 		let name_id_slice = DB_name.slice(0,6);
@@ -356,18 +357,26 @@ let check = 0;
 	
 	//計算ボタン押下時
 	$("#MATH_button").on("click",function(){
-		for(i=0;i<calendar_day.length;i++){
-			for(j=0;j<16;j++){
-				error_check[i][j] = false;
+		if(select_check){
+			for(i=0;i<calendar_day.length;i++){
+				for(j=0;j<16;j++){
+					error_check[i][j] = false;
+				}
 			}
+			apdate_sum();
+		}else{
+			alert("社員を選択してください");
 		}
-		apdate_sum();
 	});
 	
 	//一括ボタン押下時
 	$("#ALL_button").on("click",function(){
-		$("#ALL").show();
-		$("#pop_back").show();
+		if(select_check){
+			$("#ALL").show();
+			$("#pop_back").show();
+		}else{
+			alert("社員を選択してください");
+		}
 	})
 	
 	//一括入力ポップアップ
@@ -440,8 +449,12 @@ let check = 0;
 	
 	//保存ボタン押下時
 	$("#MEMORY_button").on("click",function(){
-		$("#MEMORY").show();
-		$("#pop_back").show();
+		if(select_check){
+			$("#MEMORY").show();
+			$("#pop_back").show();
+		}else{
+			alert("社員を選択してください")
+		}
 	})
 	
 	//保存確認閉じるボタン押下時
