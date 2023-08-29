@@ -1,21 +1,29 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<link rel="stylesheet" href="style.css">
+	<script src="jQuery.js"></script>
+	<link rel="stylesheet" href="style_v1.css">
 	<script src="DB_sql.js"></script>
 </head>
 <body>
-	<div class="f">
-		<label>勤務時間計算画面</label>
+	<div>
 		<button class="button_back" id="BACK_button">戻る</button>
-		<div>社員</div>
-		<select class="input" id="staff_select"><option selected hidden>選択してください</option></select>
-		<div class="m">交通費</div>
-		<input class="input" id="road_money_input" type="text"disabled>
-		<div class="m">備考</div>
-		<input class="input" id="note_input" type="text"disabled>
-		<button class="button" id="ALL_button">一括</button>
+		<div class="f">
+			<div class="m" style="margin:40 0 0 25 ">社員</div>
+			<select class="input" style="margin:40 0 0 0 " id="staff_select"><option selected hidden>選択してください</option></select>
+			<h2 id = "title_month" style="margin:10 0 0 90  ;font-size: 40px" ></h2>   <!--年月選択画面で取得した月を表示-->
+			<h2 style="font-size: 40px; margin: 10px 0; padding: 0 5px;">月勤務時間計算画面</h2>
+		</div>
+		<div class="f">
+			<div class="m">交通費</div>
+			<input class="input" id="road_money_input" type="text"disabled>
+		
+		
+			<div class="m">備考</div>
+			<input class="input" id="note_input" type="text"disabled>
+		</div>
+			<button class="button" id="ALL_button">一括</button>
+		
 	</div>
 	<br>
 	<table border="1" id="staff_time">
@@ -112,8 +120,9 @@
 	</div>
 </body>
 <script>
+
 let check = 0;
-let select_check = false;
+
 	//ブラウザのバックボタン押下時の警告メッセージ
 	window.addEventListener('load', function() {
 	  window.addEventListener('popstate', function(event) {
@@ -130,15 +139,19 @@ let select_check = false;
 	$("#BACK").hide();
 	$("#pop_back").hide();
 	
-	//年月選択画面から変数を取得(年月選択画面がまだできていないのでコメントアウトしておきます)
+	//年月選択画面から変数を取得
+	 let cash_year = localStorage.getItem("year");
+	 let cash_month = localStorage.getItem("month");
 	
-	//上記の理由によりテスト用にこの変数を使用、年月選択画面が完成次第下記の変数をコメントアウト
-	let year = "2023";
-	let month = "1";
+	let year = cash_year;
+	let month = cash_month;
 	if(month.length==1){
 		month = "0"+month;
 	}
 	
+     //タイトルの頭に月を追加
+      $("#title_month").append(cash_month);
+     	 
 	//DBからデータを取得
 	let sql_select_day = 'select * from TP_Calendar where date LIKE "'+year+'-'+month+'%"';
 	let DBsql_select_day = DB.sql(sql_select_day);
@@ -163,7 +176,6 @@ let select_check = false;
 	
 	//プルダウン選択時
 	$("#staff_select").on("change",function(){
-		select_check=true;
 		let DB_name = $(this).children(':selected').text();
 		let name = DB_name.slice(7,40);
 		let name_id_slice = DB_name.slice(0,6);
@@ -357,26 +369,18 @@ let select_check = false;
 	
 	//計算ボタン押下時
 	$("#MATH_button").on("click",function(){
-		if(select_check){
-			for(i=0;i<calendar_day.length;i++){
-				for(j=0;j<16;j++){
-					error_check[i][j] = false;
-				}
+		for(i=0;i<calendar_day.length;i++){
+			for(j=0;j<16;j++){
+				error_check[i][j] = false;
 			}
-			apdate_sum();
-		}else{
-			alert("社員を選択してください");
 		}
+		apdate_sum();
 	});
 	
 	//一括ボタン押下時
 	$("#ALL_button").on("click",function(){
-		if(select_check){
-			$("#ALL").show();
-			$("#pop_back").show();
-		}else{
-			alert("社員を選択してください");
-		}
+		$("#ALL").show();
+		$("#pop_back").show();
 	})
 	
 	//一括入力ポップアップ
@@ -444,17 +448,14 @@ let select_check = false;
 	$("#BACK_OK").on("click",function(){
 		$("#BACK").hide();
 		$("#pop_back").hide();
+		location.href = "./ym_selet.html"
 	})
 
 	
 	//保存ボタン押下時
 	$("#MEMORY_button").on("click",function(){
-		if(select_check){
-			$("#MEMORY").show();
-			$("#pop_back").show();
-		}else{
-			alert("社員を選択してください")
-		}
+		$("#MEMORY").show();
+		$("#pop_back").show();
 	})
 	
 	//保存確認閉じるボタン押下時
@@ -465,6 +466,7 @@ let select_check = false;
 	
 	//保存確認OKボタン押下時
 	$("#MEMORY_OK").on("click",function(){
+		DBsql_time = DB.sql("select staff_id,date from TE_Time");
 		let save = new Array(calendar_day.length);
 		let day = 0;
 		for(i=0;i<calendar_day.length;i++){
@@ -516,6 +518,7 @@ let select_check = false;
 					}
 				}
 				sql_update += ' where staff_id = "'+save[i][0]+'" AND date = "'+save[i][1]+'";'
+				console.log(sql_update)
 				DB.sql(sql_update);
 			}else{
 				let sql_insert = "INSERT INTO TE_Time VALUE ("
@@ -527,6 +530,7 @@ let select_check = false;
 					}
 				}
 				sql_insert += ');'
+				console.log(sql_insert)
 				DB.sql(sql_insert);
 			}
 		}
