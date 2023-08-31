@@ -88,14 +88,13 @@ table_create_all() //テーブル作成関数実行
 	     //登録ボタン押下時の処理
 	     $(function(){
 	       $("#add").on("click",function(){
-	        
 	        let add_length_check = String($("#staff_id_input").val().length)  //[社員番号]テキストボックスに入力された文字数をカウントして、格納
             let add_id_form =  $("#staff_id_input").val()  //[社員番号]テキストボックスに入力された内容を格納
             let add_name_form = $("#staff_name_input").val() //[社員名]テキストボックスに入力された内容を格納
 	         
-	         //[社員番号]テキストボックスに入力された文字数が6桁以外、もしくは数値以外が入力されるとアラートを表示して処理終了
-	         if(add_length_check != 6 || isNaN(add_id_form)){
-	          alert("社員IDが不正です")
+	         //[社員番号]テキストボックスに入力された文字数が6桁以外、数値以外、社員番号に空白文字が含まれていた場合アラートを表示して処理終了
+	         if(add_length_check != 6 || isNaN(add_id_form) || add_id_form.includes("")){
+	          alert("社員番号が不正です")
 	          return;
 	         }
 	         

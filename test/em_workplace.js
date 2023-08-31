@@ -58,13 +58,13 @@ areement_select_insert()
           "</td><td>" 
           + select_sql[i]["agreement_name"] + 
           "</td><td>" 
-          + select_sql[i]["start_time"] + 
+          + select_sql[i]["start_time"].slice(0,5) + 
           "</td><td>" 
-          + select_sql[i]["end_time"] + 
+          + select_sql[i]["end_time"].slice(0,5) + 
           "</td><td>" 
-          + select_sql[i]["work_time"] + 
+          + select_sql[i]["work_time"].slice(0,5) + 
           "</td><td>" 
-          + select_sql[i]["overtime_start"] + 
+          + select_sql[i]["overtime_start"].slice(0,5) + 
           "</td><td>" 
           + select_sql[i]["road_money"] + 
           "</td><td>" 
