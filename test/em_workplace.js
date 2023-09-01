@@ -3,12 +3,12 @@ $("#change_button").prop("disabled", true); //デフォルトで更新ボタン�
 
 ////////////////////以下SQL文一覧////////////////////
 
-let sql1 = 'SELECT TE_Staff_Location.del_flg, TE_Staff_Location.staff_id, TM_Staff.staff_name, TM_Location.location_name, agreement_name, start_time, end_time, work_time,overtime_start, road_money, note FROM TE_Staff_Location INNER JOIN TM_Staff ON TE_Staff_Location.staff_id = TM_Staff.staff_id INNER JOIN TM_Location ON TE_Staff_Location.location_id =  TM_Location.location_id INNER JOIN TC_Agreement ON TE_Staff_Location.agreement_id = TC_Agreement.agreement_id where (TE_Staff_Location.del_flg = "0" ) order by staff_id asc'
-//[TM_Staff_location]とINNER JOINしたテーブルからSELECTするSQL文
+let sql1 = 'SELECT te_staff_location.del_flg, te_staff_location.staff_id, tm_staff.staff_name, tm_location.location_name, agreement_name, start_time, end_time, work_time,overtime_start, road_money, note FROM te_staff_location INNER JOIN tm_staff ON te_staff_location.staff_id = tm_staff.staff_id INNER JOIN tm_location ON te_staff_location.location_id =  tm_location.location_id INNER JOIN tc_agreement ON te_staff_location.agreement_id = tc_agreement.agreement_id where (te_staff_location.del_flg = "0" ) order by staff_id asc'
+//[tm_staff_location]とINNER JOINしたテーブルからSELECTするSQL文
 
-let sql2 = 'SELECT staff_id, staff_name FROM TM_Staff'   //[TM_Staff]から社員ID、社員名をSELECTするSQL
-let sql3 = 'SELECT location_id, location_name  FROM TM_Location'   //[TM_Location]から勤務先ID、勤務先をSELECTするSQL
-let sql4 = 'SELECT * FROM TC_Agreement'  //[TC_Agreement]から契約形態ID、契約形態をSELECTするSQL
+let sql2 = 'SELECT staff_id, staff_name FROM tm_staff'   //[tm_staff]から社員ID、社員名をSELECTするSQL
+let sql3 = 'SELECT location_id, location_name  FROM tm_location'   //[tm_location]から勤務先ID、勤務先をSELECTするSQL
+let sql4 = 'SELECT * FROM tc_agreement'  //[tc_agreement]から契約形態ID、契約形態をSELECTするSQL
 
 //////////////////////////////////////////////////////
 
@@ -29,12 +29,12 @@ areement_select_insert()
              if($("#del_flg_show").is(':checked')){
 	               $("#table").empty();
 	               $("#table").append("<th>社員番号</th><th>社員名</th><th>勤務先</th><th>契約形態</th><th>始業</th><th>終業</th><th>勤務時間</th><th>残業開始</th><th>交通費</th><th>備考</th>");
-                   sql1 = 'SELECT TE_Staff_Location.del_flg, TE_Staff_Location.staff_id, TM_Staff.staff_name, TM_Location.location_name, agreement_name, start_time, end_time, work_time,overtime_start, road_money, note FROM TE_Staff_Location INNER JOIN TM_Staff ON TE_Staff_Location.staff_id = TM_Staff.staff_id INNER JOIN TM_Location ON TE_Staff_Location.location_id =  TM_Location.location_id INNER JOIN TC_Agreement ON TE_Staff_Location.agreement_id = TC_Agreement.agreement_id where (TE_Staff_Location.del_flg = "1" ) order by staff_id asc'
+                   sql1 = 'SELECT te_staff_location.del_flg, te_staff_location.staff_id, tm_staff.staff_name, tm_location.location_name, agreement_name, start_time, end_time, work_time,overtime_start, road_money, note FROM te_staff_location INNER JOIN tm_staff ON te_staff_location.staff_id = tm_staff.staff_id INNER JOIN tm_location ON te_staff_location.location_id =  tm_location.location_id INNER JOIN tc_agreement ON te_staff_location.agreement_id = tc_agreement.agreement_id where (te_staff_location.del_flg = "1" ) order by staff_id asc'
                    table_create_all()
                 }else{
                    $("#table").empty();
 	               $("#table").append("<th>社員番号</th><th>社員名</th><th>勤務先</th><th>契約形態</th><th>始業</th><th>終業</th><th>勤務時間</th><th>残業開始</th><th>交通費</th><th>備考</th>");
-                   sql1 = 'SELECT TE_Staff_Location.del_flg, TE_Staff_Location.staff_id, TM_Staff.staff_name, TM_Location.location_name, agreement_name, start_time, end_time, work_time,overtime_start, road_money, note FROM TE_Staff_Location INNER JOIN TM_Staff ON TE_Staff_Location.staff_id = TM_Staff.staff_id INNER JOIN TM_Location ON TE_Staff_Location.location_id =  TM_Location.location_id INNER JOIN TC_Agreement ON TE_Staff_Location.agreement_id = TC_Agreement.agreement_id where (TE_Staff_Location.del_flg = "0" ) order by staff_id asc'
+                   sql1 = 'SELECT te_staff_location.del_flg, te_staff_location.staff_id, tm_staff.staff_name, tm_location.location_name, agreement_name, start_time, end_time, work_time,overtime_start, road_money, note FROM te_staff_location INNER JOIN tm_staff ON te_staff_location.staff_id = tm_staff.staff_id INNER JOIN tm_location ON te_staff_location.location_id =  tm_location.location_id INNER JOIN tc_agreement ON te_staff_location.agreement_id = tc_agreement.agreement_id where (te_staff_location.del_flg = "0" ) order by staff_id asc'
                    table_create_all()
                }
            });
@@ -75,7 +75,7 @@ areement_select_insert()
 	     
 	  }
 	  
-	 //[TM_Staff]から社員番号プルダウンにデータ挿入
+	 //[tm_staff]から社員番号プルダウンにデータ挿入
 	function staff_id_select_insert(){
 	    let select_sql = DB.sql(sql2) //SELECT文をDB.sqlに代入し実行する
         let j_2 = select_sql.length //SELECTしたテーブルの行数をカウントし、その数値を変数jに代入
@@ -88,7 +88,7 @@ areement_select_insert()
 	  }
 	}
 	
-	//[TM_Location]から勤務先IDプルダウンにデータ挿入
+	//[tm_location]から勤務先IDプルダウンにデータ挿入
 	function location_select_insert(){
 	   	let select_sql = DB.sql(sql3) //SELECT文をDB.sqlに代入し実行する
         let j_3 = select_sql.length //SELECTしたテーブルの行数をカウントし、その数値を変数jに代入
@@ -101,7 +101,7 @@ areement_select_insert()
 	}
 
 
-    //[TM_Location]から契約形態IDプルダウンにデータ挿入
+    //[tm_location]から契約形態IDプルダウンにデータ挿入
 	function areement_select_insert(){
 	   	let select_sql = DB.sql(sql4) //SELECT文をDB.sqlに代入し実行する
         let j_4 = select_sql.length //SELECTしたテーブルの行数をカウントし、その数値を変数jに代入
